@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/flutter/slidablepanel/CHANGELOG.md
+src/flutter/slidablepanel/LICENSE
+src/flutter/slidablepanel/README.md
+src/flutter/slidablepanel/pubspec.lock
+src/flutter/slidablepanel/pubspec.yaml
+src/flutter/slidablepanel/lib/slidablepanel.dart
+src/flutter/slidablepanel/lib/src/create_control.dart
+src/flutter/slidablepanel/lib/src/slidablepanel.dart
+src/slidablepanel/__init__.py
+src/slidablepanel/slidablepanel.py
+src/slidablepanel.egg-info/PKG-INFO
+src/slidablepanel.egg-info/SOURCES.txt
+src/slidablepanel.egg-info/dependency_links.txt
+src/slidablepanel.egg-info/requires.txt
+src/slidablepanel.egg-info/top_level.txt

@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: slidablepanel
+Version: 0.1.0
+Summary: Slidablepanel control for Flet
+Author-email: Flet contributors <you@example.com>
+Project-URL: Homepage, https://mydomain.dev
+Project-URL: Documentation, https://github.com/MyGithubAccount/slidablepanel
+Project-URL: Repository, https://github.com/MyGithubAccount/slidablepanel
+Project-URL: Issues, https://github.com/MyGithubAccount/slidablepanel/issues
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: flet>=0.26.0
+
+# slidablepanel
+Slidablepanel control for Flet
+
+TODO: Add your control documentation here.
