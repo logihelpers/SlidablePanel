@@ -8,7 +8,7 @@ authors = [
     { name = "Flet developer", email = "you@example.com" }
 ]
 dependencies = [
-  "slidablepanel @ file://C:\\Users\\owen\\Desktop\\xiloswitcher",
+  "slidablepanel @ file://C:\\Users\\owen\\Desktop\\slideablepanel",
   "flet>=0.26.0",
 ]
 
