@@ -123,7 +123,7 @@ class SlidablePanel(ConstrainedControl):
         self._set_attr_json("borderRadius", self.__border_radius)
         self._set_attr_json("border", self.__border)
         self._set_attr_json("margin", self.__margin)
-        self._set_attr_json("sidebar_width", self.__sidebar_width)
+        self._set_attr_json("content_width", self.__content_width)
         self._set_attr_json("padding", self.__padding)
         self._set_attr_json("alignment", self.__alignment)
         self._set_attr_json("theme", self.__theme)
@@ -133,9 +133,9 @@ class SlidablePanel(ConstrainedControl):
 
     def _get_children(self):
         children = []
-        if self.__sidebar is not None:
-            self.__sidebar._set_attr_internal("n", "content")
-            children.append(self.__sidebar)
+        if self.__content is not None:
+            self.__content._set_attr_internal("n", "content")
+            children.append(self.__content)
 
         return children
 
