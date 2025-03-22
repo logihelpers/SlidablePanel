@@ -37,7 +37,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     );
 
     // Initialize the tween and animation
-    _widthTween = Tween<double>(begin: widget.control.attrDouble("sidebar_width", 200.0) ?? 200.0, end: 0);
+    _widthTween = Tween<double>(begin: widget.control.attrDouble("content_width", 200.0) ?? 200.0, end: 0);
     _widthAnimation = _widthTween.animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
@@ -46,7 +46,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     widget.backend.subscribeMethods(widget.control.id, (methodName, args) async {
       switch (methodName) {
         case "toggle_panel":
-          _togglePanel(bool.parse(args["sidebar_state"].toString()));
+          _togglePanel(bool.parse(args["content_state"].toString()));
           break;
       }
       return null;
@@ -70,7 +70,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
   void didUpdateWidget(SlidablePanelControl oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update animation if sidebar_width changes
-    double newWidth = widget.control.attrDouble("sidebar_width", 200.0) ?? 200.0;
+    double newWidth = widget.control.attrDouble("content_width", 200.0) ?? 200.0;
     if (newWidth != _widthTween.begin) {  // Compare with tween's begin value
       setState(() {
         _updateAnimation(newWidth);
@@ -99,7 +99,8 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     debugPrint("SlidablePanel build ($hashCode): ${widget.control.id}");
 
     return withPageArgs((context, pageArgs) {
-      var sideBarControl = widget.children.where((c) => c.name == "sidebar" && c.isVisible);
+      var contentControl = widget.children.where((c) => c.name == "content" && c.isVisible);
+      _sidebarState = widget.control.attrBool("contentShown")!;
 
       var builder = LayoutBuilder(
         builder: (context, constraints) {
@@ -111,7 +112,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
                   return SizedBox(
                     width: _widthAnimation.value,
                     height: constraints.maxHeight,
-                    child: createControl(widget.control, sideBarControl.first.id, widget.control.isDisabled)
+                    child: createControl(widget.control, contentControl.first.id, widget.control.isDisabled)
                   );
                 },
               ),

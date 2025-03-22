@@ -31,12 +31,12 @@ from flet.core.types import (
 class SlidablePanel(ConstrainedControl):
     def __init__(
         self,
-        sidebar: Optional[Control] = None,
-        # main_pane: Optional[Control] = None,
+        content: Optional[Control] = None,
+        content_shown: Optional[bool] = None,
         padding: Optional[PaddingValue] = None,
         margin: Optional[MarginValue] = None,
         alignment: Optional[Alignment] = None,
-        sidebar_width: OptionalNumber = None,
+        content_width: OptionalNumber = None,
         border: Optional[Border] = None,
         border_radius: Optional[BorderRadiusValue] = None,
         shape: Optional[BoxShape] = None,
@@ -95,14 +95,12 @@ class SlidablePanel(ConstrainedControl):
             rtl=rtl,
         )
 
-        self.sidebar = sidebar
-        # self.main_pane = main_pane
+        self.content = content
+        self.content_shown = content_shown
         self.padding = padding
         self.margin = margin
         self.alignment = alignment
-        # self.sidebar_bgcolor = sidebar_bgcolor
-        # self.main_pane_bgcolor = main_pane_bgcolor
-        self.sidebar_width = sidebar_width
+        self.content_width = content_width
         self.border = border
         self.border_radius = border_radius
         self.shape = shape
@@ -136,12 +134,8 @@ class SlidablePanel(ConstrainedControl):
     def _get_children(self):
         children = []
         if self.__sidebar is not None:
-            self.__sidebar._set_attr_internal("n", "sidebar")
+            self.__sidebar._set_attr_internal("n", "content")
             children.append(self.__sidebar)
-        
-        # if self.__main_pane is not None:
-        #     self.__main_pane._set_attr_internal("n", "main_pane")
-        #     children.append(self.__main_pane)
 
         return children
 
@@ -185,33 +179,22 @@ class SlidablePanel(ConstrainedControl):
     @margin.setter
     def margin(self, value: Optional[MarginValue]):
         self.__margin = value
-
-    # bgcolor
-    # @property
-    # def sidebar_bgcolor(self):
-    #     return self.__sidebar_bgcolor
-
-    # @sidebar_bgcolor.setter
-    # def sidebar_bgcolor(self, value: Optional[ColorValue]):
-    #     self.__sidebar_bgcolor = value
-    #     self._set_enum_attr("sidebar_bgColor", value, ColorEnums)
-    
-    # @property
-    # def main_pane_bgcolor(self):
-    #     return self.__main_pane_bgcolor
-
-    # @main_pane_bgcolor.setter
-    # def main_pane_bgcolor(self, value: Optional[ColorValue]):
-    #     self.__main_pane_bgcolor = value
-    #     self._set_enum_attr("mainPane_bgColor", value, ColorEnums)
     
     @property
-    def sidebar_width(self) -> OptionalNumber:
-        return self.__sidebar_width
+    def content_shown(self) -> Optional[bool]:
+        return self.__content_shown
 
-    @sidebar_width.setter
-    def sidebar_width(self, value: OptionalNumber):
-        self.__sidebar_width = value
+    @content_shown.setter
+    def content_shown(self, value: Optional[bool]):
+        self.__content_shown = value
+    
+    @property
+    def content_width(self) -> OptionalNumber:
+        return self.__content_width
+
+    @content_width.setter
+    def content_width(self, value: OptionalNumber):
+        self.__content_width = value
 
     # shadow
     @property
@@ -260,20 +243,12 @@ class SlidablePanel(ConstrainedControl):
 
     # content
     @property
-    def sidebar(self) -> Optional[Control]:
-        return self.__sidebar
+    def content(self) -> Optional[Control]:
+        return self.__content
 
-    @sidebar.setter
-    def sidebar(self, value: Optional[Control]):
-        self.__sidebar = value
-    
-    # @property
-    # def main_pane(self) -> Optional[Control]:
-    #     return self.__main_pane
-
-    # @sidebar.setter
-    # def main_pane(self, value: Optional[Control]):
-    #     self.__main_pane = value
+    @content.setter
+    def content(self, value: Optional[Control]):
+        self.__content = value
 
     # shape
     @property
