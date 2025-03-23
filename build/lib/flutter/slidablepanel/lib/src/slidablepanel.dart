@@ -23,48 +23,55 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     with FletStoreMixin, SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
-  late Tween<double> _widthTween;  // Added to track the Tween
+  late Tween<double> _widthTween;
   late bool _contentHidden;
   Duration _duration = const Duration(milliseconds: 300);
 
   @override
   void initState() {
     super.initState();
-
+    _contentHidden = widget.control.attrBool("content_hidden", false)!;
     _controller = AnimationController(
       duration: _duration,
       vsync: this,
     );
-
-    // Initialize the tween and animation
-    _widthTween = Tween<double>(begin: widget.control.attrDouble("content_width", 200.0) ?? 200.0, end: 0);
+    
+    _widthTween = Tween<double>(
+      begin: widget.control.attrDouble("content_width", 200.0) ?? 200.0,
+      end: 0,
+    );
     _widthAnimation = _widthTween.animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+
+    // Set initial controller value based on content_hidden
+    _controller.value = _contentHidden ? 1.0 : 0.0;
   }
 
   void _updateAnimation(double maxWidth) {
-    _widthTween.begin = maxWidth;  // Update the tween's begin value
+    _widthTween.begin = maxWidth;
     _widthAnimation = _widthTween.animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
-    // If panel is open, reset controller to match new maxWidth
-    if (_contentHidden) {
-      _controller.value = 0; // Start at maxWidth
-    } else {
-      _controller.value = 1; // Stay at 0
-    }
   }
 
   @override
   void didUpdateWidget(SlidablePanelControl oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Update animation if sidebar_width changes
     double newWidth = widget.control.attrDouble("content_width", 200.0) ?? 200.0;
-    if (newWidth != _widthTween.begin) {  // Compare with tween's begin value
+    bool newContentHidden = widget.control.attrBool("content_hidden", false)!;
+
+    if (newWidth != _widthTween.begin || newContentHidden != _contentHidden) {
       setState(() {
         _updateAnimation(newWidth);
-        widget.backend.updateControlState(widget.control.id, {"content_width": newWidth.toString()});
+        if (newContentHidden != _contentHidden) {
+          _contentHidden = newContentHidden;
+          if (_contentHidden) {
+            _controller.forward();
+          } else {
+            _controller.reverse();
+          }
+        }
       });
     }
   }
@@ -75,25 +82,14 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     super.dispose();
   }
 
-  void _togglePanel(bool contentHidden) {
-    if (contentHidden) {
-      _controller.forward();
-    } else {
-      _controller.reverse();
-    }
-    
-    _contentHidden = contentHidden;
-  }
-
   @override
   Widget build(BuildContext context) {
     debugPrint("SlidablePanel build ($hashCode): ${widget.control.id}");
 
     return withPageArgs((context, pageArgs) {
-      var sideBarControl = widget.children.where((c) => c.name == "content" && c.isVisible);
-      _contentHidden = widget.control.attrBool("content_hidden", false)!;
-      
-      _togglePanel(_contentHidden);
+      var sideBarControl = widget.children
+          .where((c) => c.name == "content" && c.isVisible)
+          .first;
 
       var builder = LayoutBuilder(
         builder: (context, constraints) {
@@ -105,7 +101,10 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
                   return SizedBox(
                     width: _widthAnimation.value,
                     height: constraints.maxHeight,
-                    child: createControl(widget.control, sideBarControl.first.id, widget.control.isDisabled)
+                    child: createControl(
+                        widget.control,
+                        sideBarControl.id,
+                        widget.control.isDisabled),
                   );
                 },
               ),
