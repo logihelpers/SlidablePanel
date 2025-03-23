@@ -131,11 +131,6 @@ class SlidablePanel(ConstrainedControl):
         self._set_attr_json("colorFilter", self.__color_filter)
         self._set_attr_json("foregroundDecoration", self.__foreground_decoration)
 
-        if self.content_hidden:
-            self.visible = False
-        else:
-            self.visible = True
-
     def _get_children(self):
         children = []
         if self.__content is not None:
@@ -195,7 +190,7 @@ class SlidablePanel(ConstrainedControl):
     
     @property
     def content_hidden(self) -> Optional[bool]:
-        return self._get_attr("content_hidden")
+        return self._get_attr("content_hidden", data_type="bool", def_value=False)
 
     @content_hidden.setter
     def content_hidden(self, value: Optional[bool]):
