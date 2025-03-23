@@ -24,12 +24,14 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
   late Tween<double> _widthTween;  // Added to track the Tween
-  bool _sidebarState = true;
+  late bool _sidebarState;
   Duration _duration = const Duration(milliseconds: 300);
 
   @override
   void initState() {
     super.initState();
+
+    _sidebarState = widget.control.attrBool("content_state", true)!;
 
     _controller = AnimationController(
       duration: _duration,
@@ -41,6 +43,8 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     _widthAnimation = _widthTween.animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+
+    _togglePanel(_sidebarState);
 
     // Subscribe to backend methods in initState
     widget.backend.subscribeMethods(widget.control.id, (methodName, args) async {
@@ -74,6 +78,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     if (newWidth != _widthTween.begin) {  // Compare with tween's begin value
       setState(() {
         _updateAnimation(newWidth);
+        widget.backend.updateControlState(widget.control.id, {"content_width": newWidth.toString()});
       });
     }
   }
@@ -92,6 +97,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     }
     
     _sidebarState = sidebarState;
+    widget.backend.updateControlState(widget.control.id, {"content_state": sidebarState.toString()});
   }
 
   @override

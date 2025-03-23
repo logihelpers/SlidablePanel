@@ -32,7 +32,7 @@ class SlidablePanel(ConstrainedControl):
     def __init__(
         self,
         content: Optional[Control] = None,
-        # main_pane: Optional[Control] = None,
+        content_state: Optional[bool] = None,
         padding: Optional[PaddingValue] = None,
         margin: Optional[MarginValue] = None,
         alignment: Optional[Alignment] = None,
@@ -96,7 +96,7 @@ class SlidablePanel(ConstrainedControl):
         )
 
         self.content = content
-        # self.main_pane = main_pane
+        self.content_state = content_state
         self.padding = padding
         self.margin = margin
         self.alignment = alignment
@@ -126,6 +126,7 @@ class SlidablePanel(ConstrainedControl):
         self._set_attr_json("border", self.__border)
         self._set_attr_json("margin", self.__margin)
         self._set_attr_json("content_width", self.__content_width)
+        self._set_attr_json("content_state", self.__content_state)
         self._set_attr_json("padding", self.__padding)
         self._set_attr_json("alignment", self.__alignment)
         self._set_attr_json("theme", self.__theme)
@@ -193,6 +194,14 @@ class SlidablePanel(ConstrainedControl):
     @content_width.setter
     def content_width(self, value: OptionalNumber):
         self.__content_width = value
+    
+    @property
+    def content_state(self) -> Optional[bool]:
+        return self.__content_state
+
+    @content_state.setter
+    def content_state(self, value: Optional[bool]):
+        self.__content_state = value
 
     # shadow
     @property
