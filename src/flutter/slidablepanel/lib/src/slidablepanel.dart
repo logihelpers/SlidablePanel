@@ -25,12 +25,13 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
   late Animation<double> _widthAnimation;
   late Tween<double> _widthTween;
   late bool _contentHidden;
-  Duration _duration = const Duration(milliseconds: 300);
+  late Duration _duration;
 
   @override
   void initState() {
     super.initState();
     _contentHidden = widget.control.attrBool("content_hidden", false)!;
+    _duration = Duration(milliseconds: widget.control.attrInt("animationDuration", 300)!);
     _controller = AnimationController(
       duration: _duration,
       vsync: this,
@@ -60,10 +61,12 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     super.didUpdateWidget(oldWidget);
     double newWidth = widget.control.attrDouble("content_width", 200.0) ?? 200.0;
     bool newContentHidden = widget.control.attrBool("content_hidden", false)!;
+    Duration newDuration = Duration(milliseconds: widget.control.attrInt("animationDuration", 300)!);
 
     if (newWidth != _widthTween.begin || newContentHidden != _contentHidden) {
       setState(() {
         _updateAnimation(newWidth);
+        _duration = newDuration;
         if (newContentHidden != _contentHidden) {
           _contentHidden = newContentHidden;
           if (_contentHidden) {
