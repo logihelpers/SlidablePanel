@@ -37,6 +37,7 @@ class SlidablePanel(ConstrainedControl):
         margin: Optional[MarginValue] = None,
         alignment: Optional[Alignment] = None,
         content_width: OptionalNumber = None,
+        animation_duration: OptionalNumber = None,
         border: Optional[Border] = None,
         border_radius: Optional[BorderRadiusValue] = None,
         shape: Optional[BoxShape] = None,
@@ -97,6 +98,7 @@ class SlidablePanel(ConstrainedControl):
 
         self.content = content
         self.content_hidden = content_hidden
+        self.animation_duration = animation_duration
         self.padding = padding
         self.margin = margin
         self.alignment = alignment
@@ -187,6 +189,14 @@ class SlidablePanel(ConstrainedControl):
     @content_width.setter
     def content_width(self, value: OptionalNumber):
         self.__content_width = value
+    
+    @property
+    def animation_duration(self) -> OptionalNumber:
+        return self._get_attr("animationDuration")
+
+    @animation_duration.setter
+    def animation_duration(self, value: OptionalNumber):
+        self._set_attr("animationDuration", value)
     
     @property
     def content_hidden(self) -> Optional[bool]:
