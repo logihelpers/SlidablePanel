@@ -124,7 +124,6 @@ class SlidablePanel(ConstrainedControl):
         self._set_attr_json("border", self.__border)
         self._set_attr_json("margin", self.__margin)
         self._set_attr_json("content_width", self.__content_width)
-        self._set_attr_json("content_hidden", self.__content_hidden)
         self._set_attr_json("padding", self.__padding)
         self._set_attr_json("alignment", self.__alignment)
         self._set_attr_json("theme", self.__theme)
@@ -196,12 +195,11 @@ class SlidablePanel(ConstrainedControl):
     
     @property
     def content_hidden(self) -> Optional[bool]:
-        self.__content_hidden = self._get_attr("content_hidden")
-        return self.__content_hidden
+        return self._get_attr("content_hidden")
 
     @content_hidden.setter
     def content_hidden(self, value: Optional[bool]):
-        self.__content_hidden = value
+        self._set_attr("content_hidden", value)
 
     # shadow
     @property
