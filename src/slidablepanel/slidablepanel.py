@@ -32,7 +32,7 @@ class SlidablePanel(ConstrainedControl):
     def __init__(
         self,
         content: Optional[Control] = None,
-        content_shown: Optional[bool] = None,
+        # main_pane: Optional[Control] = None,
         padding: Optional[PaddingValue] = None,
         margin: Optional[MarginValue] = None,
         alignment: Optional[Alignment] = None,
@@ -96,10 +96,12 @@ class SlidablePanel(ConstrainedControl):
         )
 
         self.content = content
-        self.content_shown = content_shown
+        # self.main_pane = main_pane
         self.padding = padding
         self.margin = margin
         self.alignment = alignment
+        # self.sidebar_bgcolor = sidebar_bgcolor
+        # self.main_pane_bgcolor = main_pane_bgcolor
         self.content_width = content_width
         self.border = border
         self.border_radius = border_radius
@@ -123,6 +125,7 @@ class SlidablePanel(ConstrainedControl):
         self._set_attr_json("borderRadius", self.__border_radius)
         self._set_attr_json("border", self.__border)
         self._set_attr_json("margin", self.__margin)
+        self._set_attr_json("content_width", self.__content_width)
         self._set_attr_json("padding", self.__padding)
         self._set_attr_json("alignment", self.__alignment)
         self._set_attr_json("theme", self.__theme)
@@ -135,6 +138,10 @@ class SlidablePanel(ConstrainedControl):
         if self.__content is not None:
             self.__content._set_attr_internal("n", "content")
             children.append(self.__content)
+        
+        # if self.__main_pane is not None:
+        #     self.__main_pane._set_attr_internal("n", "main_pane")
+        #     children.append(self.__main_pane)
 
         return children
 
@@ -180,20 +187,12 @@ class SlidablePanel(ConstrainedControl):
         self.__margin = value
     
     @property
-    def content_shown(self) -> Optional[bool]:
-        return self._get_attr("content_shown")
-
-    @content_shown.setter
-    def content_shown(self, value: Optional[bool]):
-        self._set_attr("content_shown", value)
-    
-    @property
     def content_width(self) -> OptionalNumber:
-        return self._get_attr("content_width")
+        return self.__content_width
 
     @content_width.setter
     def content_width(self, value: OptionalNumber):
-        self._set_attr("content_width", value)
+        self.__content_width = value
 
     # shadow
     @property
@@ -248,6 +247,14 @@ class SlidablePanel(ConstrainedControl):
     @content.setter
     def content(self, value: Optional[Control]):
         self.__content = value
+    
+    # @property
+    # def main_pane(self) -> Optional[Control]:
+    #     return self.__main_pane
+
+    # @sidebar.setter
+    # def main_pane(self, value: Optional[Control]):
+    #     self.__main_pane = value
 
     # shape
     @property
@@ -296,5 +303,5 @@ class SlidablePanel(ConstrainedControl):
         self.__theme_mode = value
         self._set_enum_attr("themeMode", value, ThemeMode)
     
-    def toggle_panel(self, sidebar_state: bool):
-        self.invoke_method("toggle_panel", arguments={"content_state" : str(sidebar_state).lower()})
+    def toggle_panel(self, content_state: bool):
+        self.invoke_method("toggle_content", arguments={"content_state" : str(content_state).lower()})

@@ -45,7 +45,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     // Subscribe to backend methods in initState
     widget.backend.subscribeMethods(widget.control.id, (methodName, args) async {
       switch (methodName) {
-        case "toggle_panel":
+        case "toggle_content":
           _togglePanel(bool.parse(args["content_state"].toString()));
           break;
       }
@@ -99,8 +99,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
     debugPrint("SlidablePanel build ($hashCode): ${widget.control.id}");
 
     return withPageArgs((context, pageArgs) {
-      var contentControl = widget.children.where((c) => c.name == "content" && c.isVisible);
-      _sidebarState = widget.control.attrBool("content_shown")!;
+      var sideBarControl = widget.children.where((c) => c.name == "content" && c.isVisible);
 
       var builder = LayoutBuilder(
         builder: (context, constraints) {
@@ -112,7 +111,7 @@ class _SlidablePanelControlState extends State<SlidablePanelControl>
                   return SizedBox(
                     width: _widthAnimation.value,
                     height: constraints.maxHeight,
-                    child: createControl(widget.control, contentControl.first.id, widget.control.isDisabled)
+                    child: createControl(widget.control, sideBarControl.first.id, widget.control.isDisabled)
                   );
                 },
               ),
