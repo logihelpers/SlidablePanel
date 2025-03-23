@@ -6,6 +6,7 @@ from slidablepanel import SlidablePanel
 def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.theme_mode = ft.ThemeMode.LIGHT
 
     page.add(
         pane := SlidablePanel(
